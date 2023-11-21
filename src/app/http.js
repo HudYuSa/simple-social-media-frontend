@@ -7,6 +7,7 @@ const http = axios.create({
     "ngrok-skip-browser-warning": true,
   },
   withCredentials: true,
+  timeout: 5000,
 });
 
 export async function initializeAxios() {
@@ -20,18 +21,32 @@ export async function initializeAxios() {
   }
 }
 
-http.interceptors.response.use(
-  async (res) => {
-    return res;
-  },
-  async (err) => {
+function createRetryInterceptor(maxRetries = 3, retryDelay = 500) {
+  let retries = 0;
+
+  return async (err) => {
     console.log(err);
-    if (err.code === "ERR_NETWORK") {
-      console.log("err network occured");
-      await initializeAxios();
+    if (retries >= maxRetries) {
       return Promise.reject(err);
-    } else return Promise.reject(err);
-  },
+    }
+
+    if (err.code === "ERR_NETWORK") {
+      console.log("inside err network");
+      retries++;
+      await initializeAxios();
+      // this is to delay the retry request
+      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      // this is retrying to request
+      return http({ ...err.config, baseURL: http.defaults.baseURL });
+    }
+
+    return Promise.reject(err);
+  };
+}
+
+http.interceptors.response.use(
+  async (res) => res,
+  createRetryInterceptor(2, 3000),
 );
 
 export default http;

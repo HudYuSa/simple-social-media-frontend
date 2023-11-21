@@ -13,7 +13,11 @@ export default {
       },
       colors: {
         darkGray: "#363636",
+        darkerGray: "#262626",
         lighterGray: "#A8A8A8",
+      },
+      animation: {
+        "fade-in": "fade-in .1s ease-in-out",
       },
     },
   },

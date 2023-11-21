@@ -5,19 +5,18 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
+// Initialize Firebase
+const app = initializeApp({
+  // Your web app's Firebase configuration
   apiKey: "AIzaSyADVR9oPrUUl4UG-yj_5VrFHqHVcy8V4P8",
   authDomain: "urlsaver-f3a58.firebaseapp.com",
   projectId: "urlsaver-f3a58",
   storageBucket: "urlsaver-f3a58.appspot.com",
   messagingSenderId: "803329195446",
   appId: "1:803329195446:web:8a6323c5eb50e602e31517",
-};
+});
 
-// Initialize Firebase
-initializeApp(firebaseConfig);
-export const db = getFirestore();
+const db = getFirestore(app);
 
 export const fetchUrls = async () => {
   try {
@@ -30,5 +29,6 @@ export const fetchUrls = async () => {
     return url.url;
   } catch (error) {
     console.error("Error fetching URLs:", error);
+    throw error;
   }
 };

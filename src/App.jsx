@@ -18,7 +18,6 @@ const App = () => {
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/:userid" element={<UserPage />} />
-
           {/* </Route> */}
         </Route>
 

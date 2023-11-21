@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { setRerender } from "../../slices/global/globalSlice";
+import {
+  setCreatePostPopUp,
+  setRerender,
+} from "../../slices/global/globalSlice";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -16,7 +19,7 @@ const Sidebar = () => {
 
   return (
     <aside className="h-full  bg-black">
-      <nav className="border-darkGray h-full border-r-2 border-solid">
+      <nav className="h-full border-r-2 border-solid border-darkGray">
         <div className="flex h-full flex-col px-6">
           <Link className="pb-8 pt-8" to={"/"} onClick={triggerRerender}>
             <FaInstagram className="h-6 w-6 text-white" />
@@ -59,7 +62,7 @@ const Sidebar = () => {
           <Button
             className={"py-4 outline-none"}
             onPress={() => {
-              alert("test");
+              dispatch(setCreatePostPopUp());
             }}
           >
             <PlusIcon className={"h-6 w-6 fill-white text-white"} />

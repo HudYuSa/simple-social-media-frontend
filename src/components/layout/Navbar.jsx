@@ -2,13 +2,23 @@ import { Link } from "react-router-dom";
 import { ExploreIcon, MessageIcon, PlusIcon, ReelsIcon } from "../common/Icons";
 import { FaUser, FaHome } from "react-icons/fa";
 import { Button } from "react-aria-components";
+import { useDispatch } from "react-redux";
+import {
+  setCreatePostPopUp,
+  setRerender,
+} from "../../slices/global/globalSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const triggerRender = () => {
+    dispatch(setRerender());
+  };
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-black">
       <hr className="border-darkGray" />
       <div className="flex w-full justify-evenly py-3">
-        <Link to={"/"}>
+        <Link to={"/"} onClick={triggerRender}>
           <FaHome className="h-6 w-6 text-white" />
         </Link>
 
@@ -21,8 +31,9 @@ const Navbar = () => {
         </Link>
 
         <Button
+          className={"outline-none"}
           onPress={() => {
-            alert("test");
+            dispatch(setCreatePostPopUp());
           }}
         >
           <PlusIcon className={"h-6 w-6 fill-white text-white"} />

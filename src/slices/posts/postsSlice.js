@@ -10,10 +10,21 @@ const initialState = {
   message: null,
 };
 
-export const getPosts = createAsyncThunk("posts/getPosts", async () => {
-  const res = await postService.getPosts();
-  return res.data;
-});
+// procedure is the procedure than this asyncthunk gonna do
+// handleError is what this asyncthunk will do if an error occured
+
+export const getPosts = createAsyncThunk(
+  "posts/getPosts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await postService.getPosts();
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      rejectWithValue(err);
+    }
+  },
+);
 
 const postSlice = createSlice({
   initialState,

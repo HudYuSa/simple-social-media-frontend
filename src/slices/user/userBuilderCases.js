@@ -10,7 +10,7 @@ export const signupCase = (builder) => {
     })
     .addCase(signup.fulfilled, (state, action) => {
       state.status = "idle";
-      state.error = null;
+      state.error = false;
       state.user = { ...state.user, ...action.payload.data };
     })
     .addCase(signup.rejected, (state, action) => {
@@ -29,7 +29,7 @@ export const signinCase = (builder) => {
     })
     .addCase(signin.fulfilled, (state, action) => {
       state.status = "idle";
-      state.error = null;
+      state.error = false;
       state.user.accessToken = action.payload.data["access_token"];
       state.user.refreshToken = action.payload.data["refresh_token"];
       state.user.logged = true;

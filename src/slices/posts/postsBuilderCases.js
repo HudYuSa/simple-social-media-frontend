@@ -11,8 +11,14 @@ export const getPostsCase = (builder) => {
       state.error = false;
     })
     .addCase(getPosts.rejected, (state, action) => {
+      console.log(action);
       state.status = "idle";
-      state.error = true;
-      state.error.message = action.error.message;
+      if (action.payload) {
+        state.error = action.payload.error;
+        state.message = action.payload.message;
+      } else {
+        state.error = true;
+        state.message = null;
+      }
     });
 };

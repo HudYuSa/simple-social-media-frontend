@@ -16,9 +16,7 @@ const initialState = {
 export const signup = createAsyncThunk(
   "user/signup",
   async (user, { rejectWithValue, dispatch }) => {
-    // procedure is the procedure than this asyncthunk gonna do
-    // handleError is what this asyncthunk will do if an error occured
-    const procedure = async () => {
+    try {
       const res = await userService.signup(user);
 
       await dispatch(
@@ -29,23 +27,9 @@ export const signup = createAsyncThunk(
       );
 
       return res.data;
-    };
-
-    const handleError = async (err) => {
-      console.error("Request failed", err);
-      return rejectWithValue({
-        ...err.response.data,
-        status: err.response.status,
-      });
-    };
-
-    try {
-      return await procedure();
     } catch (err) {
-      if (err.code === "ERR_NETWORK") {
-        return await handleErrNetwork(procedure, handleError);
-      }
-      return await handleError(err);
+      console.error("Request failed", err);
+      return rejectWithValue(err.response.data);
     }
   },
 );
@@ -53,25 +37,12 @@ export const signup = createAsyncThunk(
 export const signin = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
-    const procedure = async () => {
+    try {
       const res = await userService.signin({ email, password });
       return res.data;
-    };
-    const handleError = async (err) => {
-      console.error("Request failed", err);
-      return rejectWithValue({
-        ...err.response.data,
-        status: err.response.status,
-      });
-    };
-
-    try {
-      return await procedure();
     } catch (err) {
-      if (err.code === "ERR_NETWORK") {
-        return await handleErrNetwork(procedure, handleError);
-      }
-      return await handleError(err);
+      console.error("Request failed", err);
+      return rejectWithValue(err.response.data);
     }
   },
 );
